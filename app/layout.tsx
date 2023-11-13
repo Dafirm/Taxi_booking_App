@@ -1,10 +1,9 @@
-import NavBar from "@/component/NavBar";
+
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Outfit } from "next/font/google";
-
-
+import NavBar from "@/components/NavBar";
 
 
 const outfit = Outfit({ subsets: ["latin"] });
@@ -20,6 +19,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <ClerkProvider>
       <html lang="en">
