@@ -1,36 +1,48 @@
 "use client";
 import Booking from "@/components/Booking/Booking";
 import MapBoxMap from "@/components/Map/MapBoxMap";
+import { DestinationCordiContext } from "@/context/DestinationCordiContext";
+import { SourceCordiContext } from "@/context/SourceCordiContext";
 import { UserLocationContext } from "@/context/UserLocationContext";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Home() {
-   const [userLocation, setUserLocation] = useState<any>();
+  const [userLocation, setUserLocation] = useState<any>();
+  const [destinationCordinates, setDestinationCordinates] = useState<any>([]);
+  const [sourceCordinates, setSourceCordinates] = useState<any>([]);
 
   useEffect(() => {
     getUserLocation();
-  },[])
-  const getUserLocation=()=>{
-    navigator.geolocation.getCurrentPosition(function(pos){
+  }, []);
+  const getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (pos) {
       setUserLocation({
-        lat:pos.coords.latitude,
-        lng:pos.coords.longitude
-      })
-    })
-  }
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      });
+    });
+  };
   return (
-    <div>
-      <UserLocationContext.Provider value={{userLocation, setUserLocation}}>
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          <div className="bg-blue-100">
-            <Booking />
-          </div>
-          <div className="col-span-2 bg-red-100">
-            <MapBoxMap />
-          </div>
-        </div>
+    <div className="">
+      <UserLocationContext.Provider value={{ userLocation, setUserLocation }}>
+        <SourceCordiContext.Provider
+          value={{ sourceCordinates, setSourceCordinates }}
+        >
+          <DestinationCordiContext.Provider
+            value={{ destinationCordinates, setDestinationCordinates }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <div className="bg-blue-100">
+                <Booking />
+              </div>
+              <div className="col-span-2 bg-red-100">
+                <MapBoxMap />
+              </div>
+            </div>
+          </DestinationCordiContext.Provider>
+        </SourceCordiContext.Provider>
       </UserLocationContext.Provider>
     </div>
   );

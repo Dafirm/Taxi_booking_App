@@ -1,4 +1,6 @@
 
+import { DestinationCordiContext } from "@/context/DestinationCordiContext";
+import { SourceCordiContext } from "@/context/SourceCordiContext";
 import React, { useContext, useEffect, useState } from "react";
 
 const session_token = "5ccce4a4-ab0a-4a7c-943d-580e55542363";
@@ -9,12 +11,15 @@ function AutocompleteAddress() {
   const [sourceChange, setSourceChange] = useState<any>(false);
   const [destinationChange, setDestinationChange] = useState<any>(false);
 
-  // const {sourceCordinates, setSourceCordinates} =
-  //   useContext(SourceCordiContext);
+  const {sourceCordinates, setSourceCordinates} = useContext(
+    SourceCordiContext
+  )
+  
+   
 
-  // const { destinationCordinates, setDestinationCordinates } = useContext(
-  //   DestinationCordiContext
-  // );
+  const { destinationCordinates, setDestinationCordinates } = useContext(
+    DestinationCordiContext
+  );
 
   const [addressList, setAddressList] = useState<any>([]);
   const [destination, setDestination] = useState<any>();
@@ -54,10 +59,10 @@ function AutocompleteAddress() {
 
     const result = await res.json();
 
-  //   setSourceCordinates({
-  //     lng: result.features[0].geometry.coordinates[0],
-  //     lat: result.features[0].geometry.coordinates[1],
-  //   });
+    setSourceCordinates({
+      lng: result.features[0].geometry.coordinates[0],
+      lat: result.features[0].geometry.coordinates[1],
+    });
      console.log(result);
    };
 
@@ -76,11 +81,11 @@ function AutocompleteAddress() {
 
     const result = await res.json();
 
-  //   setDestinationCordinates({
-  //     lng: result.features[0].geometry.coordinates[0],
-  //     lat: result.features[0].geometry.coordinates[1],
-  //   });
-  //   console.log(result);
+    setDestinationCordinates({
+      lng: result.features[0].geometry.coordinates[0],
+      lat: result.features[0].geometry.coordinates[1],
+    });
+    console.log(result);
   };
 
   return (
@@ -161,4 +166,8 @@ function AutocompleteAddress() {
 
 export default AutocompleteAddress;
 
+
+function setDestinationCordinates(arg0: { lng: any; lat: any; }) {
+  throw new Error("Function not implemented.");
+}
 
