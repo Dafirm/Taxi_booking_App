@@ -167,7 +167,4 @@ function AutocompleteAddress() {
 export default AutocompleteAddress;
 
 
-function setDestinationCordinates(arg0: { lng: any; lat: any; }) {
-  throw new Error("Function not implemented.");
-}
 

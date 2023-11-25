@@ -2,6 +2,8 @@
 import Booking from "@/components/Booking/Booking";
 import MapBoxMap from "@/components/Map/MapBoxMap";
 import { DestinationCordiContext } from "@/context/DestinationCordiContext";
+import { DirectionDataContext } from "@/context/DirectionDataContext";
+import { SelectedCarAmountContext } from "@/context/SelectedCarAmountContext";
 import { SourceCordiContext } from "@/context/SourceCordiContext";
 import { UserLocationContext } from "@/context/UserLocationContext";
 import { UserButton } from "@clerk/nextjs";
@@ -12,6 +14,8 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<any>();
   const [destinationCordinates, setDestinationCordinates] = useState<any>([]);
   const [sourceCordinates, setSourceCordinates] = useState<any>([]);
+  const [directionData, setDirectionData] = useState<any>([])
+  const [carAmount, setCarAmount] = useState<any>();
 
   useEffect(() => {
     getUserLocation();
@@ -33,14 +37,22 @@ export default function Home() {
           <DestinationCordiContext.Provider
             value={{ destinationCordinates, setDestinationCordinates }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3">
-              <div className="bg-blue-100">
-                <Booking />
-              </div>
-              <div className="col-span-2 bg-red-100">
-                <MapBoxMap />
-              </div>
-            </div>
+            <DirectionDataContext.Provider
+              value={{ directionData, setDirectionData }}
+            >
+              <SelectedCarAmountContext.Provider
+                value={{ carAmount, setCarAmount }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-3">
+                  <div className="bg-blue-100">
+                    <Booking />
+                  </div>
+                  <div className="col-span-2 bg-red-100">
+                    <MapBoxMap />
+                  </div>
+                </div>
+              </SelectedCarAmountContext.Provider>
+            </DirectionDataContext.Provider>
           </DestinationCordiContext.Provider>
         </SourceCordiContext.Provider>
       </UserLocationContext.Provider>

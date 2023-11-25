@@ -6,9 +6,11 @@ import Markers from './Markers';
 import { SourceCordiContext } from '@/context/SourceCordiContext';
 import { DestinationCordiContext } from '@/context/DestinationCordiContext';
 import { DirectionDataContext } from '@/context/DirectionDataContext';
+import MapBoxRoute from './MapBoxRoute';
+import DistanceTime from './DistanceTime';
 const MAPBOX_DRIVING_ENDPOINT =
   "https://api.mapbox.com/directions/v5/mapbox/driving/";
-
+const session_token = "5ccce4a4-ab0a-4a7c-943d-580e55542363";
 function MapBoxMap() {
   const mapRef = useRef<any>();
   const { userLocation, setUserLocation } = useContext(UserLocationContext);
@@ -19,7 +21,7 @@ function MapBoxMap() {
     DestinationCordiContext
   );
 
-  // const { directionData, setDirectionData } = useContext(DirectionDataContext);
+  const { directionData, setDirectionData } = useContext(DirectionDataContext);
 
   //Use to Fly to Source Marker Location
 
@@ -69,7 +71,7 @@ function MapBoxMap() {
     const result = await res.json();
     console.log(result);
     console.log(result.routes);
-    // setDirectionData(result);
+    setDirectionData(result);
   };
   return (
     <div className="p-5">
@@ -77,7 +79,7 @@ function MapBoxMap() {
       <div className="rounded-lg overflow-hidden">
         {userLocation ? (
           <Map
-          ref={mapRef}
+            ref={mapRef}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
             initialViewState={{
               longitude: userLocation?.lng,
@@ -88,8 +90,16 @@ function MapBoxMap() {
             mapStyle="mapbox://styles/mapbox/streets-v9"
           >
             <Markers />
+            {directionData?.routes ? (
+              <MapBoxRoute
+                coordinates={directionData?.routes[0]?.geometry?.coordinates}
+              />
+            ) : null}
           </Map>
         ) : null}
+      </div>
+      <div className='absolute bottom-[200px] z-20 right-[20px] hidden md:block'>
+            <DistanceTime/>
       </div>
     </div>
   );
